@@ -1,6 +1,8 @@
 package com.elcodeur;
 
 import com.elcodeur.Exception.InvalidGameSequenceException;
+import com.elcodeur.ds.Game;
+import com.elcodeur.ds.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;

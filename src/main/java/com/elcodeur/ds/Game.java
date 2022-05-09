@@ -1,7 +1,7 @@
-package com.elcodeur;
+package com.elcodeur.ds;
 
 import com.elcodeur.Exception.InvalidGameSequenceException;
-import com.elcodeur.enums.Score;
+import com.elcodeur.ds.Player;
 import com.elcodeur.rules.TennisRulesInt;
 import com.elcodeur.rules.impl.TennisRulesImpl;
 import lombok.Getter;
@@ -31,6 +31,10 @@ public class Game {
         tennisRules = new TennisRulesImpl();
     }
 
+    public void incrementCurrentGame() {
+        currentGame += 1;
+    }
+
     /**
      * start the game based on list of sequence of points winner
      * Example of sequence : {"P1", "P1", "P2", "P1", "P1"}
@@ -43,12 +47,12 @@ public class Game {
         if (gameSets == null) {
             throw new InvalidGameSequenceException("Invalid game sequence");
         }
-        for (List<String> set : gameSets) {
-            gameWinner = Optional.empty();
+        for (List<String> gameSet : gameSets) {
             if (matchWinner.isPresent()) {
                 throw new InvalidGameSequenceException("Invalid game sequence : Match winner already decided");
             }
-            for (String pointSequence : set) {
+            gameWinner = Optional.empty();
+            for (String pointSequence : gameSet) {
                 updateGameScore(pointSequence);
             }
             gameWinner.ifPresent(s -> {
@@ -62,27 +66,26 @@ public class Game {
         if (gameWinner.isPresent()) {
             throw new InvalidGameSequenceException("Invalid game sequence : Game winner already decided");
         }
-        if (pointSequence.equalsIgnoreCase("P1")) {
-            if (isTieBreak()) {
-                tennisRules.updateGameScoreWithTieBreakRule(player1, player2, this);
-            } else {
-                tennisRules.updateGameScoreWithRegularRule(player1, player2, this);
-            }
-            displayGameScore(player1);
+        if ("P1".equalsIgnoreCase(pointSequence)) {
+            applyGameRules(player1, player2);
         } else {
-            if (isTieBreak()) {
-                tennisRules.updateGameScoreWithTieBreakRule(player2, player1, this);
-            } else {
-                tennisRules.updateGameScoreWithRegularRule(player2, player1, this);
-            }
-            displayGameScore(player2);
+            applyGameRules(player2, player1);
         }
+    }
+
+    private void applyGameRules(Player pointWinner, Player otherPlayer) {
+        if (isTieBreak()) {
+            tennisRules.updateGameScoreWithTieBreakRule(pointWinner, otherPlayer, this);
+        } else {
+            tennisRules.updateGameScoreWithRegularRule(pointWinner, otherPlayer, this);
+        }
+        displayGameScore(pointWinner);
     }
 
     private void displayGameScore(Player pointWinner) {
         System.out.println(pointWinner.getName() + " wins 1 point");
-        System.out.println("Player 1 Game Score : " + resolveEnumScore(player1.getGameScore()));
-        System.out.println("Player 2 Game score : " + resolveEnumScore(player2.getGameScore()));
+        System.out.println("Player 1 Game Score : " + player1.getGameScore());
+        System.out.println("Player 2 Game score : " + player2.getGameScore());
         System.out.println("Player 1 Set Score : " + player1.getGameWins());
         System.out.println("Player 2 Set Score : " + player2.getGameWins());
         if (isTieBreak()) {
@@ -90,13 +93,5 @@ public class Game {
             System.out.println("Player 2 TieBreak Score : " + player2.getTieBreakScore());
         }
         System.out.println("######################################");
-    }
-
-    private String resolveEnumScore(Score enumScore) {
-        if (enumScore.equals(Score.ADV) || enumScore.equals(Score.DEUCE)) {
-            return enumScore.name();
-        } else {
-            return enumScore.toString();
-        }
     }
 }

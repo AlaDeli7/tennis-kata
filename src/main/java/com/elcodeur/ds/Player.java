@@ -1,4 +1,4 @@
-package com.elcodeur;
+package com.elcodeur.ds;
 
 import com.elcodeur.enums.Score;
 import lombok.Getter;
@@ -16,5 +16,13 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.gameScore = Score.ZERO;
+    }
+
+    public void incrementTieBreakScore() {
+        tieBreakScore += 1;
+    }
+
+    public void incrementGameWins() {
+        gameWins += 1;
     }
 }

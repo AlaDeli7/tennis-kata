@@ -1,7 +1,7 @@
 package com.elcodeur.rules;
 
-import com.elcodeur.Game;
-import com.elcodeur.Player;
+import com.elcodeur.ds.Game;
+import com.elcodeur.ds.Player;
 
 public interface TennisRulesInt {
 

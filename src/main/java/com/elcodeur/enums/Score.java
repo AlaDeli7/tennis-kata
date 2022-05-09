@@ -5,8 +5,8 @@ public enum Score {
     FIFTEEN("15"),
     THIRTY("30"),
     FORTY("40"),
-    ADV(""),
-    DEUCE("");
+    ADV("ADV"),
+    DEUCE("DEUCE");
 
     private final String scoreValue;
 
