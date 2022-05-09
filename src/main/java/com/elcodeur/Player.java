@@ -9,18 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Player {
     private String name;
-    private Score score;
+    private Score gameScore;
+    private int tieBreakScore;
+    private int gameWins;
 
     public Player(String name) {
         this.name = name;
-        this.score = Score.ZERO;
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", score=" + score +
-                '}';
+        this.gameScore = Score.ZERO;
     }
 }
