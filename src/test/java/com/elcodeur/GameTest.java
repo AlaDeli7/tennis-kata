@@ -45,6 +45,18 @@ class GameTest {
     }
 
     @Test
+    void startGame_should_throw_InvalidGameExceptionSequence_when_sequence_empty() {
+        //Given
+        String[] gameSequence = {};
+
+        //When
+        Executable tennisGame = () -> game.startGame(gameSequence);
+
+        //then
+        assertThrows(InvalidGameExceptionSequence.class, tennisGame);
+    }
+
+    @Test
     void startGame_should_throw_InvalidGameExceptionSequence_when_invalid_sequence() {
         //Given
         String[] gameSequence = {"P1", "P1", "P2", "P1", "P2", "P2", "P2", "P1", "P1", "P1", "P1", "P2"};

@@ -30,6 +30,9 @@ public class Game {
      * and the game is still on
      */
     public void startGame(String[] gameSequence) throws InvalidGameExceptionSequence {
+        if (gameSequence == null || gameSequence.length ==0) {
+            throw new InvalidGameExceptionSequence("Invalid game sequence");
+        }
         for (String pointSequence : gameSequence) {
             //
             if (gameWinner.isPresent()) {
